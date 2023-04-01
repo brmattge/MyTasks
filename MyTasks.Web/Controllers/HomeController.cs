@@ -18,6 +18,12 @@ namespace MyTasks.Web.Controllers
             return View();
         }
 
+        [HttpPost]
+        public IActionResult Create(string data)
+        {
+            return Json(new { success = true, message = "Changes saved successfully." });
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
