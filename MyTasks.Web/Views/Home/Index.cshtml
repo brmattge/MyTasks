@@ -64,7 +64,7 @@
                     </div>
                     <div class="col-md-6">
                         <label for="inputRemainingTimeForWarning" class="form-label">Remaining time for warning</label>
-                        <input type="time" class="form-control" id="inputRemainingTimeForWarning">
+                        <input type="text" class="form-control" id="inputRemainingTimeForWarning" placeholder="hh:mm">
                     </div>
                 </div>
             </div>
@@ -79,7 +79,35 @@
 @section Scripts {
     <script>
         $(document).ready(function () {
-            debugger;
+            $("#inputRemainingTimeForWarning").on("input", function () {
+                var inputValue = $(this).val();
+                // Remove any non-numeric or colon characters
+                inputValue = inputValue.replace(/[^0-9:]/g, "");
+                // Limit the input to 5 characters
+                if (inputValue.length > 5) {
+                    inputValue = inputValue.substr(0, 5);
+                }
+                // Format the input value as hh:mm
+                if (inputValue.length == 2 && $(this).val().length < 3) {
+                    $(this).val(inputValue + ":");
+                } else {
+                    $(this).val(inputValue);
+                }
+                $(this).attr("placeholder", "hh:mm");
+            }).on("keydown", function (event) {
+                // Allow backspace key
+                if (event.which == 8) {
+                    var inputValue = $(this).val();
+                    // Remove the last character
+                    if (inputValue.length > 0) {
+                        $(this).val(inputValue.slice(0, -1));
+                    } else {
+                        $(this).val("");
+                    }
+                    event.preventDefault();
+                }
+            });
+
             $("#saveChangesButton").click(function () {
                 $.ajax({
                     url: '/Home/Create',
