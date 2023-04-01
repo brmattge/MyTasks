@@ -1,0 +1,17 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+\# directories<br>
+**/Release
+/.vs
+/.cache
+/packages
+/MyTasks.Application/bin/Debug/net6.0
+/MyTasks.Application/obj
+/MyTasks.Domain/bin/Debug/net6.0
+/MyTasks.Domain/obj
+/MyTasks.Infra/bin/Debug/net6.0
+/MyTasks.Infra/obj
+/MyTasks.Web/bin/Debug/net6.0
+/MyTasks.Web/obj
