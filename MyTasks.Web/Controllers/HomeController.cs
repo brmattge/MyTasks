@@ -1,16 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MyTasks.Web.Models;
-using System.Diagnostics;
+using MyTasks.Application.Interfaces;
 
 namespace MyTasks.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IServiceTasks _serviceTasks;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IServiceTasks serviceTasks)
         {
-            _logger = logger;
+            _serviceTasks = serviceTasks;
         }
 
         public IActionResult Index()
@@ -19,15 +18,34 @@ namespace MyTasks.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(string task, decimal effort, string remainingTimeForWarning)
+        public IActionResult Create(
+            string task,
+            decimal effort,
+            string remainingTimeForWarning)
         {
-            return Json(new { success = true, message = "Changes saved successfully." });
+            var result = _serviceTasks.Create(task, effort, remainingTimeForWarning);
+
+            return Json(result.Result);
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        [HttpPut]
+        public IActionResult Update(
+            int id,
+            string task,
+            decimal effort,
+            string remainingTimeForWarning)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            var result = _serviceTasks.Update(id, task, effort, remainingTimeForWarning);
+
+            return Json(result);
+        }
+
+        [HttpDelete]
+        public IActionResult Delete(int id)
+        {
+            var result = _serviceTasks.Delete(id);
+
+            return Json(result);
         }
     }
 }

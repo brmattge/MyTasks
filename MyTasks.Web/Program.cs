@@ -1,7 +1,12 @@
+using MyTasks.Application.Interfaces;
+using MyTasks.Application.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<IServiceTasks, ServiceTasks>();
 
 var app = builder.Build();
 
