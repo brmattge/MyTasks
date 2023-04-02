@@ -109,10 +109,20 @@
             });
 
             $("#saveChangesButton").click(function () {
+                var inputTask = $('#inputTask').val();
+                var inputEffort = $('#inputEffort').val();
+                var inputRemainingTimeForWarning = $('#inputRemainingTimeForWarning').val();
+
+                var data = {
+                    task: inputTask,
+                    effort: inputEffort,
+                    remainingTimeForWarning: inputRemainingTimeForWarning
+                };
+
                 $.ajax({
                     url: '/Home/Create',
                     type: 'POST',
-                    data: { data: "Test" },
+                    data: data,
                     success: function (result) {
                         console.log(result);
                     },

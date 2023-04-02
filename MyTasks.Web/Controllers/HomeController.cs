@@ -19,7 +19,7 @@ namespace MyTasks.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(string data)
+        public IActionResult Create(string task, decimal effort, string remainingTimeForWarning)
         {
             return Json(new { success = true, message = "Changes saved successfully." });
         }
