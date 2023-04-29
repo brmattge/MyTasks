@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MyTasks.Application\MyTasks.Application.csproj" />
+    <ProjectReference Include="..\MyTasks.Infra\MyTasks.Infra.csproj" />
   </ItemGroup>
 
 </Project>

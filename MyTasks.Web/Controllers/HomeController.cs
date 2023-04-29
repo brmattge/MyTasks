@@ -30,7 +30,7 @@ namespace MyTasks.Web.Controllers
 
         [HttpPut]
         public IActionResult Update(
-            int id,
+            string id,
             string task,
             decimal effort,
             string remainingTimeForWarning)
@@ -41,7 +41,7 @@ namespace MyTasks.Web.Controllers
         }
 
         [HttpDelete]
-        public IActionResult Delete(int id)
+        public IActionResult Delete(string id)
         {
             var result = _serviceTasks.Delete(id);
 

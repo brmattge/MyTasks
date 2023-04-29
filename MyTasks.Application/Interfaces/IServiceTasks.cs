@@ -9,11 +9,11 @@ namespace MyTasks.Application.Interfaces
             decimal effort, 
             string remainingTimeForWarning);
         Task<ApplicationResult<string>> Update(
-            int id,
+            string id,
             string task,
             decimal effort,
             string remainingTimeForWarning);
         Task<ApplicationResult<string>> Get();
-        Task<ApplicationResult<string>> Delete(int id);
+        Task<ApplicationResult<string>> Delete(string id);
     }
 }
