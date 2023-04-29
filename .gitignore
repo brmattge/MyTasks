@@ -15,3 +15,6 @@
 /MyTasks.Infra/obj
 /MyTasks.Web/bin/Debug/net6.0
 /MyTasks.Web/obj
+
+# files
+appsettings.Development.json
