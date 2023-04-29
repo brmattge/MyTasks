@@ -17,4 +17,4 @@
 /MyTasks.Web/obj
 
 # files
-/MyTasks.Web/appsettings.Development.json
+/MyTasks.Web/appsettings.Development
