@@ -1,4 +1,5 @@
-﻿@{
+﻿@model IEnumerable<MyTasks.Application.Models.TaskModel>
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -16,32 +17,35 @@
                 <th scope="col">Task</th>
                 <th scope="col">Effort</th>
                 <th scope="col">Remaining Work</th>
+                <th scope="col">Remaining Time For Warning</th>
                 <th scope="col">Completed Work</th>
                 <th scope="col">Status</th>
             </tr>
         </thead>
         <tbody>
+            @if (Model != null)
+            {
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Task</td>
+                        <td>@item.Effort</td>
+                        <td></td>
+                        <td>@item.RemainingTimeForWarning</td>
+                        <td></td>
+                        <td>@item.Status</td>
+                    </tr>
+                }
+            }
+            @*
+                EXAMPLE
             <tr>
                 <td>Task 123: Test</td>
                 <td>2</td>
                 <td>1.90</td>
                 <td>0.10</td>
                 <td>In progress</td>
-            </tr>
-            <tr>
-                <td>Task 123: Test</td>
-                <td>2</td>
-                <td>1.90</td>
-                <td>0.10</td>
-                <td>In progress</td>
-            </tr>
-            <tr>
-                <td>Task 123: Test</td>
-                <td>2</td>
-                <td>1.90</td>
-                <td>0.10</td>
-                <td>In progress</td>
-            </tr>
+            </tr>*@
         </tbody>
     </table>
 </div>

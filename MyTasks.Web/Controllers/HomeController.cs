@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyTasks.Application.Interfaces;
+using System.Threading.Tasks;
 
 namespace MyTasks.Web.Controllers
 {
@@ -12,9 +13,12 @@ namespace MyTasks.Web.Controllers
             _serviceTasks = serviceTasks;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> IndexAsync()
         {
-            return View();
+            var tasks = await _serviceTasks.Get();
+
+            //return View(tasks);
+            return View(tasks.Result);
         }
 
         [HttpPost]

@@ -83,19 +83,49 @@ namespace MyTasks.Application.Services
             return await Task.FromResult(result);
         }
 
-        public async Task<ApplicationResult<string>> Get()
+        public async Task<ApplicationResult<IEnumerable<TaskModel>>> Get()
         {
-            ApplicationResult<string> result = new ApplicationResult<string>();
+            ApplicationResult<IEnumerable<TaskModel>> result = new ApplicationResult<IEnumerable<TaskModel>>();
 
             try
             {
-                result.Result = "Data retrieved successfully";
+                var container = _context.GetContainer();
+                var query = container.GetItemQueryIterator<TaskModel>();
+                var results = new List<TaskModel>();
+                while (query.HasMoreResults)
+                {
+                    var response = await query.ReadNextAsync();
+                    results.AddRange(response.ToList());
+                }
+
+                result.Result = results;
                 result.StatusCode = HttpStatusCode.OK;
             }
             catch (Exception ex)
             {
                 result.StatusCode = HttpStatusCode.InternalServerError;
-                result.Result = "There was an error while retrieving your data";
+                //result.Result = "There was an error while retrieving your data";
+            }
+
+            return await Task.FromResult(result);
+        }
+
+        public async Task<ApplicationResult<TaskModel>> GetById(string id)
+        {
+            ApplicationResult<TaskModel> result = new ApplicationResult<TaskModel>();
+
+            try
+            {
+                var container = _context.GetContainer();
+                var response = await container.ReadItemAsync<TaskModel>(id, new PartitionKey(id));
+
+                result.Result = response;
+                result.StatusCode = HttpStatusCode.OK;
+            }
+            catch (Exception ex)
+            {
+                result.StatusCode = HttpStatusCode.InternalServerError;
+                //result.Result = "There was an error while retrieving your data";
             }
 
             return await Task.FromResult(result);
