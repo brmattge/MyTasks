@@ -14,18 +14,25 @@
         margin: 0 10px;
         color: #ccc;
     }
+
+    .table > :not(:last-child) > :last-child > * {
+        border-bottom-color: #dee2e6;
+    }
 </style>
 
 <div class="text-start">
     <p>Hi, Bruno.</p>
 </div>
 
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">Create</button>
-<button type="button" class="btn btn-danger">Delete</button>
-
 <div class="table-responsive">
-    <table class="table table-hover">
+    <table class="table table-hover bg-white">
         <thead>
+            <tr>
+                <th colspan="7" style="padding: 1rem 1rem;">
+                    <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#myModal" id="btn-create">Create</button>
+                    <button type="button" class="btn btn-danger">Delete</button>
+                </th>
+            </tr>
             <tr>
                 <th scope="col">Task</th>
                 <th scope="col">Effort</th>
@@ -45,28 +52,28 @@
 
                     <tr id="row">
                         <td hidden>@item.Id</td>
-                        <td>@item.Task</td>
-                        <td>@item.Effort</td>
-                        <td>@item.RemainingWork</td>
-                        <td>@item.RemainingTimeForWarning</td>
-                        <td>@item.CompletedWork</td>
-                        <td>@status</td>
-                        <td>
-                            <button class="transparent-button">
-                                <i class="fa fa-play"></i>
+                        <td class="align-middle">@item.Task</td>
+                        <td class="align-middle">@item.Effort</td>
+                        <td class="align-middle">@item.RemainingWork</td>
+                        <td class="align-middle">@item.RemainingTimeForWarning</td>
+                        <td class="align-middle">@item.CompletedWork</td>
+                        <td class="align-middle">@status</td>
+                        <td style="text-align: right;">
+                            <button class="transparent-button fs-5">
+                                <i class="bi bi-play-circle"></i>
                             </button>
-                            <button class="transparent-button">
-                                <i class="fa fa-pause"></i>
+                            <button class="transparent-button fs-5">
+                                <i class="bi bi-pause-circle"></i>
                             </button>
-                            <button class="transparent-button">
-                                <i class="fa fa-check"></i>
+                            <button class="transparent-button fs-5">
+                                <i class="bi bi-check-circle"></i>
                             </button>
                             <span class="separator">|</span>
-                            <button id="btn-edit" class="transparent-button">
-                                <i class="fa fa-pencil"></i>
+                            <button id="btn-edit" class="transparent-button fs-5">
+                                <i class="bi bi-pencil"></i>
                             </button>
-                            <button class="transparent-button">
-                                <i class="fa fa-trash-can"></i>
+                            <button class="transparent-button fs-5">
+                                <i class="bi bi-trash2"></i>
                             </button>
                         </td>
                     </tr>
@@ -75,6 +82,8 @@
         </tbody>
     </table>
 </div>
+
+
 
 <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -146,7 +155,16 @@
                     }
                     event.preventDefault();
                 }
-            });            
+            });
+
+            $("#btn-create").click(function () {
+                $("#inputId").val("");
+                $("#inputTask").val("");
+                $("#inputEffort").val("");
+                $("#inputRemainingWork").val("");
+                $("#inputRemainingTimeForWarning").val("");
+                $("#inputCompletedWork").val("");
+            });
 
             $("#saveChangesButton").click(function () {
                 var inputId = $('#inputId').val();
