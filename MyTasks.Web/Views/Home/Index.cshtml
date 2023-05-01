@@ -18,6 +18,30 @@
     .table > :not(:last-child) > :last-child > * {
         border-bottom-color: #dee2e6;
     }
+
+    .swal-button--confirm {
+        color: #fff;
+        background-color: #0d6efd;
+        border-color: #0d6efd;
+    }
+
+    .swal-button--confirm:not([disabled]):hover {
+        color: #fff;
+        background-color: #0b5ed7;
+        border-color: #0a58ca;
+    }
+
+    .swal-button--cancel {
+        color: #fff;
+        background-color: #6c757d;
+        border-color: #6c757d;
+    }
+    
+    .swal-button--cancel:not([disabled]):hover {
+        color: #fff;
+        background-color: #5c636a;
+        border-color: #565e64;
+    }
 </style>
 
 <div class="text-start">
@@ -44,7 +68,7 @@
             </tr>
         </thead>
         <tbody>
-            @if (Model != null)
+            @if (Model != null && Model.Any())
             {
                 @foreach (var item in Model)
                 {
@@ -72,12 +96,18 @@
                             <button id="btn-edit" class="transparent-button fs-5">
                                 <i class="bi bi-pencil"></i>
                             </button>
-                            <button class="transparent-button fs-5">
+                            <button class="transparent-button fs-5" id="btn-delete">
                                 <i class="bi bi-trash2"></i>
                             </button>
                         </td>
                     </tr>
                 }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="7" class="text-center">No results found.</td>
+                </tr>
             }
         </tbody>
     </table>
@@ -93,7 +123,7 @@
             </div>
             <div class="modal-body">
                 <div class="row g-3">
-                    <input type="hidden" id="inputId"/>
+                    <input type="hidden" id="inputId" />
 
                     <div class="col-12">
                         <label for="inputTask" class="form-label">Task</label>
@@ -189,17 +219,9 @@
                         type: 'POST',
                         data: data,
                         success: function (result) {
-                            if (result.statusCode == 200){
-                                swal({
-                                    title: 'Success',
-                                    text: 'Saved successfully',
-                                    icon: 'success',
-                                    buttons: false,
-                                    timer: 2000
-                                }).then(function () {
-                                    location.reload();
-                                });
-                            } 
+                            if (result.statusCode == 200) {
+                                location.reload();
+                            }
                             else {
                                 swal({
                                     title: 'Error',
@@ -209,7 +231,7 @@
                                     timer: 2000
                                 });
                             }
-                            
+
                         },
                         error: function (xhr, status, error) {
                             swal({
@@ -229,15 +251,7 @@
                         data: data,
                         success: function (result) {
                             if (result.statusCode == 200) {
-                                swal({
-                                    title: 'Success',
-                                    text: 'Updated successfully',
-                                    icon: 'success',
-                                    buttons: false,
-                                    timer: 2000
-                                }).then(function () {
-                                    location.reload();
-                                });
+                                location.reload();
                             }
                             else {
                                 swal({
@@ -248,7 +262,7 @@
                                     timer: 2000
                                 });
                             }
-                            
+
                         },
                         error: function (xhr, status, error) {
                             swal({
@@ -280,6 +294,54 @@
                 $('#inputCompletedWork').val(completedWork);
 
                 $('#myModal').modal('show');
+            });
+
+            $(document).on('click', '#btn-delete', function () {
+                var $row = $(this).closest('tr');
+                var id = $row.find('td:nth-child(1)').text().trim();
+
+                swal({
+                    title: "Are you sure?",
+                    text: "Once deleted, you will not be able to recover this row!",
+                    icon: "warning",
+                    buttons: true
+                }).then((confirmed) => {
+                    if (confirmed) {
+                        $.ajax({
+                            url: '/Home/Delete',
+                            type: 'DELETE',
+                            data: { id: id },
+                            success: function (result) {
+                                if (result == 200) {
+                                    $row.remove();
+
+                                    var rowCount = $('table tbody tr').length;
+                                    if (rowCount == 0) {
+                                        $('table tbody').append('<tr><td colspan="7" class="text-center">No results found.</td></tr>');
+                                    }
+                                }
+                                else {
+                                    swal({
+                                        title: 'Error',
+                                        text: 'There was an error while saving your changes',
+                                        icon: 'error',
+                                        buttons: false,
+                                        timer: 2000
+                                    });
+                                }
+                            },
+                            error: function (xhr, status, error) {
+                                swal({
+                                    title: 'Error',
+                                    text: 'There was an error while saving your changes',
+                                    icon: 'error',
+                                    buttons: false,
+                                    timer: 2000
+                                });
+                            }
+                        });
+                    }
+                });
             });
         });
     </script>

@@ -56,7 +56,7 @@ namespace MyTasks.Web.Controllers
                 completedWork,
                 status);
 
-            return Json(result);
+            return Json(result.Result);
         }
 
         [HttpDelete]
@@ -64,7 +64,7 @@ namespace MyTasks.Web.Controllers
         {
             var result = _serviceTasks.Delete(id);
 
-            return Json(result);
+            return Json(result.Result);
         }
     }
 }
