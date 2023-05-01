@@ -16,12 +16,14 @@ namespace MyTasks.Application.Services
             _context = context;
         }
 
-        public async Task<ApplicationResult<string>> Create(
+        public async Task<ApplicationResult<TaskModel>> Create(
             string task,
             decimal effort,
-            string remainingTimeForWarning)
+            decimal remainingWork,
+            string remainingTimeForWarning,
+            decimal completedWork)
         {
-            ApplicationResult<string> result = new ApplicationResult<string>();
+            ApplicationResult<TaskModel> result = new ApplicationResult<TaskModel>();
 
             try
             {
@@ -30,32 +32,36 @@ namespace MyTasks.Application.Services
                     Id = Guid.NewGuid().ToString(),
                     Task = task,
                     Effort = effort,
+                    RemainingWork = remainingWork,
                     RemainingTimeForWarning = remainingTimeForWarning,
-                    Status = "New"
+                    CompletedWork = completedWork,
+                    Status = null
                 };
 
                 var container = _context.GetContainer();
                 var response = await container.CreateItemAsync(request);
 
-                result.Result = "Saved successfully";
+                result.Result = request;
                 result.StatusCode = HttpStatusCode.OK;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 result.StatusCode = HttpStatusCode.InternalServerError;
-                result.Result = "There was an error while saving your changes";
             }
 
             return await Task.FromResult(result);
         }
 
-        public async Task<ApplicationResult<string>> Update(
+        public async Task<ApplicationResult<TaskModel>> Update(
             string id,
             string task,
             decimal effort,
-            string remainingTimeForWarning)
+            decimal remainingWork,
+            string remainingTimeForWarning,
+            decimal completedWork,
+            string status)
         {
-            ApplicationResult<string> result = new ApplicationResult<string>();
+            ApplicationResult<TaskModel> result = new ApplicationResult<TaskModel>();
 
             try
             {
@@ -64,20 +70,21 @@ namespace MyTasks.Application.Services
                     Id = id,
                     Task = task,
                     Effort = effort,
+                    RemainingWork = remainingWork,
                     RemainingTimeForWarning = remainingTimeForWarning,
-                    Status = "New"
+                    CompletedWork = completedWork,
+                    Status = status
                 };
 
                 var container = _context.GetContainer();
                 var response = await container.ReplaceItemAsync(request, request.Id);
 
-                result.Result = "Updated successfully";
+                result.Result = request;
                 result.StatusCode = HttpStatusCode.OK;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 result.StatusCode = HttpStatusCode.InternalServerError;
-                result.Result = "There was an error while saving your changes";
             }
 
             return await Task.FromResult(result);
@@ -101,10 +108,9 @@ namespace MyTasks.Application.Services
                 result.Result = results;
                 result.StatusCode = HttpStatusCode.OK;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 result.StatusCode = HttpStatusCode.InternalServerError;
-                //result.Result = "There was an error while retrieving your data";
             }
 
             return await Task.FromResult(result);
@@ -122,34 +128,27 @@ namespace MyTasks.Application.Services
                 result.Result = response;
                 result.StatusCode = HttpStatusCode.OK;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 result.StatusCode = HttpStatusCode.InternalServerError;
-                //result.Result = "There was an error while retrieving your data";
             }
 
             return await Task.FromResult(result);
         }
 
-        public async Task<ApplicationResult<string>> Delete(string id)
+        public async Task<HttpStatusCode> Delete(string id)
         {
-            ApplicationResult<string> result = new ApplicationResult<string>();
-
             try
             {
                 var container = _context.GetContainer();
                 await container.DeleteItemAsync<TaskModel>(id, new PartitionKey(id));
 
-                result.Result = "Deleted successfully";
-                result.StatusCode = HttpStatusCode.OK;
+                return await Task.FromResult(HttpStatusCode.OK);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                result.StatusCode = HttpStatusCode.InternalServerError;
-                result.Result = "There was an error while saving your changes";
+                return await Task.FromResult(HttpStatusCode.InternalServerError);
             }
-
-            return await Task.FromResult(result);
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyTasks.Application.Interfaces;
-using System.Threading.Tasks;
 
 namespace MyTasks.Web.Controllers
 {
@@ -13,11 +12,10 @@ namespace MyTasks.Web.Controllers
             _serviceTasks = serviceTasks;
         }
 
-        public async Task<IActionResult> IndexAsync()
+        public async Task<IActionResult> Index()
         {
             var tasks = await _serviceTasks.Get();
 
-            //return View(tasks);
             return View(tasks.Result);
         }
 
@@ -25,9 +23,16 @@ namespace MyTasks.Web.Controllers
         public IActionResult Create(
             string task,
             decimal effort,
-            string remainingTimeForWarning)
+            decimal remainingWork,
+            string remainingTimeForWarning,
+            decimal completedWork)
         {
-            var result = _serviceTasks.Create(task, effort, remainingTimeForWarning);
+            var result = _serviceTasks.Create(
+                task,
+                effort,
+                remainingWork,
+                remainingTimeForWarning,
+                completedWork);
 
             return Json(result.Result);
         }
@@ -37,9 +42,19 @@ namespace MyTasks.Web.Controllers
             string id,
             string task,
             decimal effort,
-            string remainingTimeForWarning)
+            decimal remainingWork,
+            string remainingTimeForWarning,
+            decimal completedWork,
+            string status)
         {
-            var result = _serviceTasks.Update(id, task, effort, remainingTimeForWarning);
+            var result = _serviceTasks.Update(
+                id,
+                task,
+                effort,
+                remainingWork,
+                remainingTimeForWarning,
+                completedWork,
+                status);
 
             return Json(result);
         }

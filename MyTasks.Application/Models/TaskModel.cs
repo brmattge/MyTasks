@@ -13,10 +13,16 @@ namespace MyTasks.Application.Models
         [JsonProperty("effort")]
         public decimal Effort { get; set; }
 
+        [JsonProperty("remainingWork")]
+        public decimal RemainingWork { get; set; }
+
         [JsonProperty("remainingTimeForWarning")]
         public string RemainingTimeForWarning { get; set; }
 
+        [JsonProperty("completedWork")]
+        public decimal CompletedWork { get; set; }
+
         [JsonProperty("status")]
-        public string Status { get; set; }
+        public string? Status { get; set; }
     }
 }
