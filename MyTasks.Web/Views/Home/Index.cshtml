@@ -189,10 +189,36 @@
                         type: 'POST',
                         data: data,
                         success: function (result) {
-                            console.log(result);
+                            if (result.statusCode == 200){
+                                swal({
+                                    title: 'Success',
+                                    text: 'Saved successfully',
+                                    icon: 'success',
+                                    buttons: false,
+                                    timer: 2000
+                                }).then(function () {
+                                    location.reload();
+                                });
+                            } 
+                            else {
+                                swal({
+                                    title: 'Error',
+                                    text: 'There was an error while saving your changes',
+                                    icon: 'error',
+                                    buttons: false,
+                                    timer: 2000
+                                });
+                            }
+                            
                         },
                         error: function (xhr, status, error) {
-                            console.log(xhr, status, error);
+                            swal({
+                                title: 'Error',
+                                text: 'There was an error while saving your changes',
+                                icon: 'error',
+                                buttons: false,
+                                timer: 2000
+                            });
                         }
                     });
                 }
@@ -202,10 +228,36 @@
                         type: 'PUT',
                         data: data,
                         success: function (result) {
-                            console.log(result);
+                            if (result.statusCode == 200) {
+                                swal({
+                                    title: 'Success',
+                                    text: 'Updated successfully',
+                                    icon: 'success',
+                                    buttons: false,
+                                    timer: 2000
+                                }).then(function () {
+                                    location.reload();
+                                });
+                            }
+                            else {
+                                swal({
+                                    title: 'Error',
+                                    text: 'There was an error while saving your changes',
+                                    icon: 'error',
+                                    buttons: false,
+                                    timer: 2000
+                                });
+                            }
+                            
                         },
                         error: function (xhr, status, error) {
-                            console.log(xhr, status, error);
+                            swal({
+                                title: 'Error',
+                                text: 'There was an error while saving your changes',
+                                icon: 'error',
+                                buttons: false,
+                                timer: 2000
+                            });
                         }
                     });
                 }
